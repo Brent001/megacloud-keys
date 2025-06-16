@@ -59,7 +59,7 @@ async function main() {
         console.log(match[0]);
 
         const extra_message =
-          "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log).Do not include comments, explanations, or additional fluff — output code only.";
+          "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function.Do not include comments, explanations, or additional fluff — output code only.";
         const prompt = match[0] + "\n" + extra_message;
 
         console.log("Waiting for LLLM response.");
@@ -72,7 +72,6 @@ async function main() {
           .slice(1, -1)
           .join("\n")
           .replace("console.log", "return");
-
         let finalKey = new Function(final_code)();
 
         if (typeof finalKey === "string") {
@@ -81,7 +80,7 @@ async function main() {
           console.log("Key successfully written.");
         } else {
           console.error(
-            "Generated code for pattern 3 did not return a string."
+            "Generated code did not return a key."
           );
         }
       } catch (error) {
