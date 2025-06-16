@@ -3,7 +3,7 @@ import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-const API_KEY = process.env.API_KEY
+const API_KEY = process.env.API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 const execAsync = promisify(exec);
@@ -65,23 +65,21 @@ async function main() {
         console.log("Waiting for LLLM response.");
 
         const decoded_code = await generateContent(prompt);
-
         const lines = decoded_code.split("\n");
 
         const final_code = lines
           .slice(1, -1)
           .join("\n")
           .replace("console.log", "return");
+        console.log(final_code);
         let finalKey = new Function(final_code)();
-
+        console.log(finalKey);
         if (typeof finalKey === "string") {
           await writeFileAsync("key.txt", finalKey, "utf8");
 
           console.log("Key successfully written.");
         } else {
-          console.error(
-            "Generated code did not return a key."
-          );
+          console.error("Generated code did not return a key.");
         }
       } catch (error) {
         console.error("Error processing output.js.", error);
