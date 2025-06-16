@@ -3,7 +3,7 @@ import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-const API_KEY =  process.env.API_KEY;
+const API_KEY = process.env.API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 const execAsync = promisify(exec);
@@ -69,11 +69,14 @@ async function main() {
 
         const lines = decoded_code.split("\n");
 
-        const final_code = lines
-          .slice(1, -1)
+        const startsWithFence = lines[0]?.trim().startsWith("```javascript");
+        const endsWithFence = lines[lines.length - 1]?.trim() === "```";
+
+        const final_code = (
+          startsWithFence && endsWithFence ? lines.slice(1, -1) : lines
+        )
           .join("\n")
           .replace("console.log", "return");
-        console.log(final_code);
         let finalKey = new Function(final_code)();
         console.log("\nFinal key is: ");
         console.log(finalKey + "\n");
