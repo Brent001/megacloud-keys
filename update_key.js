@@ -3,7 +3,7 @@ import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.API_KEY
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 const execAsync = promisify(exec);
@@ -51,13 +51,15 @@ async function main() {
       }
 
       try {
-        const match = data.match(/\(\(\)\s*=>\s*\{([\s\S]*?)\(\(\)\s*=>\s*\{/);
+        const match = data.match(/\(\(\)\s*=>\s*\{([\s\S]*?)try\s*{/);
         if (!match) {
           console.error("!No match found!");
           return;
         }
+        console.log(match[0]);
+
         const extra_message =
-          "Decode this script that generates a 64-bit secret key and provide the cleaned-up JavaScript code that performs the same functionality and the last line finally should print the key — output code only, without explanations or comments.";
+          "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log).Do not include comments, explanations, or additional fluff — output code only.";
         const prompt = match[0] + "\n" + extra_message;
 
         console.log("Waiting for LLLM response.");

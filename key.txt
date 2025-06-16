@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 65602913aa4921e7bcba977e01d01bd26
+=======
+7031a4e014648053a8f5395257d506965602913aa4921e7bcba977e01d01bd26
+>>>>>>> 19dfde5 (Enhancing prompt to generate the key)
