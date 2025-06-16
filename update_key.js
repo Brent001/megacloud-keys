@@ -3,15 +3,16 @@ import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
 
-const API_KEY = process.env.API_KEY;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+const API_KEY_1 = process.env.API_KEY_1;
+const API_KEY_2 = process.env.API_KEY_2;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=`;
 
 const execAsync = promisify(exec);
 const writeFileAsync = promisify(fs.writeFile);
 
-async function generateContent(prompt) {
+async function generateContent(prompt, API_KEY) {
   try {
-    const response = await axios.post(API_URL, {
+    const response = await axios.post(API_URL + API_KEY, {
       contents: [
         {
           parts: [{ text: prompt }],
@@ -25,15 +26,14 @@ async function generateContent(prompt) {
   }
 }
 
-async function main() {
+async function processSite(url, scriptFile, outputFile, API_KEY) {
+  console.log(`Fetching script from ${url}...`);
+
   try {
-    console.log("Fetching script...");
-    const response = await axios.get(
-      "https://megacloud.blog/js/player/a/v2/pro/embed-1.min.js?v=" + Date.now()
-    );
+    const response = await axios.get(url);
     console.log("Received script.");
 
-    await writeFileAsync("input.txt", response.data, "utf8");
+    await writeFileAsync(scriptFile, response.data, "utf8");
 
     console.log("input.txt successfully written.");
 
@@ -42,7 +42,7 @@ async function main() {
 
     console.log("deobfuscate.js finished.");
 
-    console.log("Reading output.js...");
+    console.log("Reading output.js.");
 
     fs.readFile("output.js", "utf8", async (err, data) => {
       if (err) {
@@ -56,7 +56,7 @@ async function main() {
           console.error("!No match found!");
           return;
         }
-        console.log(match[0]);
+        console.log("Match found.");
 
         const extra_message =
           "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function.Do not include comments, explanations, or additional fluff — output code only.";
@@ -64,7 +64,7 @@ async function main() {
 
         console.log("Waiting for LLLM response.");
 
-        const decoded_code = await generateContent(prompt);
+        const decoded_code = await generateContent(prompt, API_KEY);
         console.log(decoded_code);
 
         const lines = decoded_code.split("\n");
@@ -77,11 +77,14 @@ async function main() {
         )
           .join("\n")
           .replace("console.log", "return");
+
         let finalKey = new Function(final_code)();
+
         console.log("\nFinal key is: ");
         console.log(finalKey + "\n");
+
         if (typeof finalKey === "string") {
-          await writeFileAsync("key.txt", finalKey, "utf8");
+          await writeFileAsync(outputFile, finalKey, "utf8");
 
           console.log("Key successfully written.");
         } else {
@@ -94,6 +97,22 @@ async function main() {
   } catch (error) {
     console.error("Error in main.", error);
   }
+}
+
+async function main() {
+  await processSite(
+    "https://megacloud.blog/js/player/a/v2/pro/embed-1.min.js?v=" + Date.now(),
+    "input.txt",
+    "key.txt",
+    API_KEY_1
+  );
+
+  await processSite(
+    "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
+    "input.txt",
+    "rabbit.txt",
+    API_KEY_2
+  );
 }
 
 main()
