@@ -75,16 +75,12 @@ async function main() {
         let finalKey = new Function(final_code)();
         console.log("\nFinal key is: ");
         console.log(finalKey + "\n");
-        if (finalKey.length === 64) {
-          if (typeof finalKey === "string") {
-            await writeFileAsync("key.txt", finalKey, "utf8");
+        if (typeof finalKey === "string") {
+          await writeFileAsync("key.txt", finalKey, "utf8");
 
-            console.log("Key successfully written.");
-          } else {
-            console.error("Generated code did not return a key.");
-          }
+          console.log("Key successfully written.");
         } else {
-          console.log("Did not write anything");
+          console.error("Generated code did not return a key.");
         }
       } catch (error) {
         console.error("Error processing output.js.", error);
