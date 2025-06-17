@@ -84,7 +84,7 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
         console.log(finalKey + "\n");
 
         if (typeof finalKey === "string") {
-          await writeFileAsync(outputFile, finalKey, "utf8");
+          await writeFileAsync(outputFile, finalKey.trim(), "utf8");
 
           console.log("Key successfully written.");
         } else {
