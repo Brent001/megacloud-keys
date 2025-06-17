@@ -37,9 +37,6 @@ jobs:
           API_KEY_2: ${{ secrets.API_KEY_2 }}
         run: node update_key.js
 
-      - name: Trim trailing newline from key.txt
-        run: truncate -s -1 key.txt
-
       - name: Commit and push updated files
         uses: EndBug/add-and-commit@v9
         with:
