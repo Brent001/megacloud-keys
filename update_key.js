@@ -100,12 +100,12 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
 }
 
 async function main() {
-  await processSite(
-    "https://megacloud.blog/js/player/a/v2/pro/embed-1.min.js?v=" + Date.now(),
-    "input.txt",
-    "key.txt",
-    API_KEY_1
-  );
+  // await processSite(
+  //   "https://megacloud.blog/js/player/a/v2/pro/embed-1.min.js?v=" + Date.now(),
+  //   "input.txt",
+  //   "key.txt",
+  //   API_KEY_1
+  // );
 
   await processSite(
     "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
