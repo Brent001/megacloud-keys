@@ -61,23 +61,6 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
         const extra_message = `
                     Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.
                     Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.
-                    The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function. 
-                    but if in case the the code look similar to this
-                    if (H[318560].m8rnkMB()) {
-                    U = [29, 31, 16, 26, 31, 25, 24, 29, 27, 31, 17, 17, 79, 17, 72, 26, 77, 76, 31, 31, 29, 30, 75, 75, 25, 77, 74, 17, 16, 31, 17, 75, 28, 30, 29, 30, 31, 29, 16, 29, 77, 75, 30, 77, 75, 28, 29, 16, 27, 76, 25, 31, 76, 79, 29, 27, 72, 28, 74, 24, 76, 74, 27, 27];
-                    V = () => {
-                    H.h$E.t9f0vXT();
-                    if (!H.h9.J870crs()) {
-                    return v0g13["fromCharCode"] (...U["map"](a => {
-                    if (!H.P6R.y7PE9tf()) {}
-                    H.h$E.t9f0vxT();
-                    if (H[318560].m8rnkMB()) {
-                    return 0;
-                    };
-                    }
-                    }
-                    }));
-                    there will be a variable before the array you have to consider that variable as key and inside mapping you have xor it with the element and then you will get the key , but if the code is not like this then do what you understand
                     Do not include comments, explanations, or additional fluff — output code only.
         `;
         const prompt = match[0] + "\n" + extra_message;
