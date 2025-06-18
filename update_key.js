@@ -58,7 +58,7 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
         }
         console.log("Match found.");
 
-         const extraMessage = `
+        const extra_message = `
                     Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.
                     Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.
                     The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function. 
