@@ -2,6 +2,8 @@ import fs from "fs";
 import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const API_KEY_1 = process.env.API_KEY_1;
 const API_KEY_2 = process.env.API_KEY_2;
@@ -80,7 +82,7 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
                     there will be a variable before the array you have to consider that variable as key and inside mapping you have xor it with the element and then you will get the key , but if the code is not like this then do what you understand
                     Do not include comments, explanations, or additional fluff — output code only.
         `;
-        const prompt = match[0] + "\n" + extra_message;
+        const prompt = match[0] + "\n" + extraMessage;
 
         console.log("Waiting for LLLM response.");
 
