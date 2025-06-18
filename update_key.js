@@ -59,7 +59,7 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
         console.log("Match found.");
 
         const extra_message =
-          "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function.Do not include comments, explanations, or additional fluff — output code only.";
+          "Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key. Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation. The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function. Also if it seems you can't understand what happens see there is a variable prsent with a single value before the array you have to do xor with it inside map and you will get the key. Do not include comments, explanations, or additional fluff — output code only.";
         const prompt = match[0] + "\n" + extra_message;
 
         console.log("Waiting for LLLM response.");
@@ -107,12 +107,12 @@ async function main() {
     API_KEY_1
   );
 
-  // await processSite(
-  //   "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
-  //   "input.txt",
-  //   "rabbit.txt",
-  //   API_KEY_2
-  // );
+  await processSite(
+    "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
+    "input.txt",
+    "rabbit.txt",
+    API_KEY_2
+  );
 }
 
 main()
