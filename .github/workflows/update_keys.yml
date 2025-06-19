@@ -1,12 +1,8 @@
 name: Update key
 
 on:
-  # push:
-  #   branches:
-  #     - main
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 * * * *"
+
 permissions:
   contents: write
 
@@ -27,7 +23,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Pull latest changes with rebase
-        run: git pull origin main --rebase
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git pull origin main --rebase
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
