@@ -1,7 +1,9 @@
 name: Update key
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # runs at minute 0 every hour
+  workflow_dispatch:     # still allows manual runs if needed
 
 permissions:
   contents: write
