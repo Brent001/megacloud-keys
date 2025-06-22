@@ -108,12 +108,12 @@ async function main() {
     API_KEY_1
   );
 
-  // await processSite(
-  //   "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
-  //   "input.txt",
-  //   "rabbit.txt",
-  //   API_KEY_2
-  // );
+  await processSite(
+    "https://cloudvidz.net/js/player/m/v2/pro/embed-1.min.js?v=" + Date.now(),
+    "input.txt",
+    "rabbit.txt",
+    API_KEY_2
+  );
 }
 
 main()
