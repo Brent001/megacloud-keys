@@ -57,13 +57,10 @@ async function processSite(url, scriptFile, outputFile, API_KEY) {
           return;
         }
         console.log("Match found.");
-
-        const extra_message = `
-                   Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.
-                   Remove all irrelevant, unused, or undefined code or any block that you don't understand — keep just the cleaned-up JavaScript that performs the key generation and also avoid going into infinite loop.
-                   The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), 
-                   and do not wrap it inside any function.Do not include comments, explanations, or additional fluff — output code only.
-        `;
+        const xor_value_regex = /\b([a-zA-Z_$][\w$]*)\s*=\s*(?!0\b)(\d+)\s*;/g;
+        const xor_value = match[0].match(xor_value_regex)[0];
+        const extra_message =
+          `Decode the following obfuscated script, extract, and retain only the relevant code that directly generates the 64-bit secret key.Remove all irrelevant, unused, or undefined code — keep just the cleaned-up JavaScript that performs the key generation.The cleaned-up script should be self-contained and functional, with the last line printing the generated key (using console.log), and do not wrap it inside any function.Do not include comments, explanations, or additional fluff — output code only. ${xor_value?`Also we have ${xor_value},so when you do mapping, xor each element with the ${xor_value}`:""}`;
         const prompt = match[0] + "\n" + extra_message;
 
         console.log("Waiting for LLLM response.");
