@@ -5,7 +5,7 @@ import { promisify } from "util";
 
 const API_KEY_1 = process.env.API_KEY_1;
 const API_KEY_2 = process.env.API_KEY_2;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=`;
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=`;
 
 const execAsync = promisify(exec);
 const writeFileAsync = promisify(fs.writeFile);
